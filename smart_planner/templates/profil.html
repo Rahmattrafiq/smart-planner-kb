@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Profil Saya{% endblock %}
+{% block content %}
+<h1 class="page-title">Profil Saya</h1>
+<p class="page-sub">Data mahasiswa dan target karier yang tersimpan.</p>
+
+{% if mhs %}
+<div class="static-card">
+  <h3>{{ mhs.nama }}</h3>
+  <p><b>Program Studi:</b> {{ mhs.program_studi }}</p>
+  <p><b>Semester Saat Ini:</b> {{ mhs.semester }}</p>
+  <p><b>Target Karier:</b> {{ mhs.roadmap.career_label }}</p>
+  <p><b>Skill Dimiliki:</b> {{ mhs.skills|join(', ') if mhs.skills else '-' }}</p>
+  <p><b>Minat:</b> {{ mhs.minat or '-' }}</p>
+  <a href="{{ url_for('roadmap_view', mahasiswa_id=mhs.id) }}" class="btn-primary" style="margin-top:10px;">Lihat Roadmap Saya &rarr;</a>
+</div>
+{% else %}
+<div class="empty-state">
+  Kamu belum membuat roadmap karier.<br>
+  <a href="{{ url_for('input_form') }}">Buat roadmap sekarang</a>
+</div>
+{% endif %}
+{% endblock %}

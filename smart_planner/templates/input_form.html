@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Buat Roadmap{% endblock %}
+{% block content %}
+<h1 class="page-title">Buat Roadmap Karier</h1>
+<p class="page-sub">Lengkapi informasi berikut untuk mendapatkan rekomendasi roadmap karier yang sesuai dengan tujuanmu.</p>
+
+<form class="form-card" action="{{ url_for('generate') }}" method="POST" id="planner-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label>Nama Mahasiswa</label>
+      <input type="text" name="nama" placeholder="Masukkan nama lengkap" required>
+    </div>
+    <div class="form-group">
+      <label>Program Studi</label>
+      <select name="program_studi">
+        <option>Ilmu Komputer</option>
+        <option>Sistem Informasi</option>
+        <option>Teknik Informatika</option>
+        <option>Teknik Elektro</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Semester Saat Ini</label>
+      <select name="semester" required>
+        <option value="">Pilih semester</option>
+        {% for i in range(1, 9) %}
+        <option value="{{ i }}">Semester {{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Target Karier</label>
+      <select name="career_key" required>
+        <option value="">Pilih target karier</option>
+        {% for key, c in careers.items() %}
+        <option value="{{ key }}">{{ c.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:18px;">
+    <label>Skill yang Sudah Dimiliki</label>
+    <p style="font-size:12.5px;color:#6b7594;margin:-4px 0 10px;">Pilih skill yang sudah kamu kuasai</p>
+    <div class="checkbox-grid">
+      {% for value, text in [('python','Python'), ('java','Java'), ('javascript','JavaScript'), ('html_css','HTML/CSS'), ('sql','SQL'), ('git','Git'), ('ui_ux','UI/UX')] %}
+      <label class="checkbox-chip">
+        <input type="checkbox" name="skills" value="{{ value }}"> {{ text }}
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Minat atau Bidang yang Disukai (Opsional)</label>
+    <input type="text" name="minat" placeholder="Contoh: Web Development, Data Science, Mobile App, AI, dll">
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Buat Roadmap &rarr;</button>
+  </div>
+</form>
+
+<script>
+document.querySelectorAll('.checkbox-chip input').forEach(function(cb) {
+  cb.addEventListener('change', function() {
+    this.closest('.checkbox-chip').classList.toggle('checked', this.checked);
+  });
+});
+</script>
+{% endblock %}

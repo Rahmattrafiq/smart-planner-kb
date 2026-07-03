@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Panduan{% endblock %}
+{% block content %}
+<h1 class="page-title">Panduan Penggunaan</h1>
+<p class="page-sub">Langkah-langkah menggunakan Smart Planner Pengembangan Karier Mahasiswa.</p>
+
+<div class="static-card">
+  <h3>Cara Membuat Roadmap</h3>
+  <ul>
+    <li>Klik <b>Mulai Rencanakan Karier</b> di halaman Beranda.</li>
+    <li>Isi data mahasiswa: nama, program studi, semester saat ini.</li>
+    <li>Pilih target karier yang ingin dicapai.</li>
+    <li>Centang skill yang sudah kamu miliki saat ini.</li>
+    <li>Klik <b>Buat Roadmap</b> &mdash; sistem akan menyusun roadmap secara otomatis menggunakan Goal-Based AI Planning.</li>
+  </ul>
+  <h3>Cara Kerja Sistem</h3>
+  <p>Sistem merepresentasikan skill yang kamu miliki sebagai <i>kondisi awal (initial state)</i> dan target karier sebagai <i>tujuan (goal state)</i>. Sistem kemudian menyusun urutan aksi (belajar skill, membangun portofolio, sertifikasi, magang) yang diperlukan untuk mencapai goal tersebut, lalu mengelompokkannya ke dalam roadmap per semester.</p>
+  <h3>Menandai Aktivitas Selesai</h3>
+  <p>Buka detail semester, lalu centang checklist pada aktivitas yang sudah kamu selesaikan. Progres akan otomatis tersimpan.</p>
+</div>
+{% endblock %}
