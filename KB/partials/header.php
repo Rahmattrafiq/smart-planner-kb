@@ -1,3 +1,4 @@
+<?php $authUser = currentUser(); ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -26,7 +27,7 @@
             <a href="index.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>">
                 <span class="nav-ic">⌂</span> Beranda
             </a>
-            <?php if (currentUser()): ?>
+            <?php if ($authUser): ?>
                 <a href="dashboard.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>">
                     <span class="nav-ic">➕</span> Roadmap Saya
                 </a>
@@ -34,17 +35,19 @@
                     <span class="nav-ic">✦</span> Buat Roadmap
                 </a>
             <?php endif; ?>
-            <a href="login.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'login.php' ? 'active' : '' ?>">
-                <span class="nav-ic">🔐</span> Masuk
-            </a>
-            <a href="register.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'active' : '' ?>">
-                <span class="nav-ic">📝</span> Daftar
-            </a>
+            <?php if (!$authUser): ?>
+                <a href="login.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'login.php' ? 'active' : '' ?>">
+                    <span class="nav-ic">🔐</span> Masuk
+                </a>
+                <a href="register.php" class="nav-item <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'active' : '' ?>">
+                    <span class="nav-ic">📝</span> Daftar
+                </a>
+            <?php endif; ?>
         </nav>
 
         <div class="sidebar-footer">
-            <?php if (currentUser()): ?>
-                <div class="profile-pill">Halo, <?= htmlspecialchars(currentUser()['nama']) ?></div>
+            <?php if ($authUser): ?>
+                <div class="profile-pill">Halo, <?= htmlspecialchars($authUser['nama']) ?></div>
                 <a href="logout.php" class="nav-item nav-item-muted">
                     <span class="nav-ic">↩</span> Keluar
                 </a>
