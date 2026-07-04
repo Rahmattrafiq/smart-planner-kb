@@ -24,18 +24,22 @@ include __DIR__ . '/partials/header.php';
 ?>
 
 <div class="form-card">
-    <h2>Login</h2>
-    <p>Masuk untuk melihat dan mengelola roadmap Anda.</p>
+    <h1 class="page-title">Masuk ke Akun</h1>
+    <p class="page-sub">Masuk untuk melihat dan mengelola roadmap karier Anda.</p>
     <form method="post">
-        <label>Email</label>
-        <input type="email" name="email" required>
-
-        <label>Password</label>
-        <input type="password" name="password" required>
-
-        <button class="btn btn-primary" type="submit">Masuk</button>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Masuk</button>
+        </div>
     </form>
-    <p class="muted">Belum punya akun? <a href="register.php">Daftar di sini</a>.</p>
+    <p class="muted" style="margin-top:16px;">Belum punya akun? <a href="register.php" style="color:var(--accent);font-weight:700;">Daftar di sini</a>.</p>
 </div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>

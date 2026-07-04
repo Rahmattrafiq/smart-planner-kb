@@ -47,24 +47,30 @@ include __DIR__ . '/partials/header.php';
 ?>
 
 <div class="form-card">
-    <h2>Buat Akun</h2>
-    <p>Daftar untuk menyimpan roadmap Anda.</p>
+    <h1 class="page-title">Buat Akun Baru</h1>
+    <p class="page-sub">Daftar untuk menyimpan roadmap karier Anda.</p>
     <form method="post">
-        <label>Nama Lengkap</label>
-        <input type="text" name="nama" required>
-
-        <label>Email</label>
-        <input type="email" name="email" required>
-
-        <label>Password</label>
-        <input type="password" name="password" required>
-
-        <label>Konfirmasi Password</label>
-        <input type="password" name="confirm_password" required>
-
-        <button class="btn btn-primary" type="submit">Daftar</button>
+        <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" name="nama" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label>Konfirmasi Password</label>
+            <input type="password" name="confirm_password" required>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Daftar</button>
+        </div>
     </form>
-    <p class="muted">Sudah punya akun? <a href="login.php">Masuk di sini</a>.</p>
+    <p class="muted" style="margin-top:16px;">Sudah punya akun? <a href="login.php" style="color:var(--accent);font-weight:700;">Masuk di sini</a>.</p>
 </div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
