@@ -16,8 +16,18 @@ def init_db():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nama TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS mahasiswa (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
             nama TEXT NOT NULL,
             program_studi TEXT NOT NULL,
             semester INTEGER NOT NULL,
@@ -25,7 +35,8 @@ def init_db():
             skills TEXT NOT NULL,
             minat TEXT,
             roadmap_json TEXT NOT NULL,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
         )
     """)
     cur.execute("""
@@ -42,13 +53,49 @@ def init_db():
     conn.close()
 
 
-def save_mahasiswa(nama, program_studi, semester, career_key, skills, minat, roadmap):
+def register_user(nama, email, password):
     conn = get_db()
     cur = conn.cursor()
     cur.execute(
-        """INSERT INTO mahasiswa (nama, program_studi, semester, career_key, skills, minat, roadmap_json)
-           VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        (nama, program_studi, semester, career_key, json.dumps(skills), minat, json.dumps(roadmap)),
+        "INSERT INTO users (nama, email, password_hash) VALUES (?, ?, ?)",
+        (nama, email, password),
+    )
+    conn.commit()
+    user_id = cur.lastrowid
+    conn.close()
+    return user_id
+
+
+def get_user_by_email(email):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def get_user_by_id(user_id):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def authenticate_user(email, password):
+    user = get_user_by_email(email)
+    if not user:
+        return None
+    if user["password_hash"] != password:
+        return None
+    return user
+
+
+def save_mahasiswa(nama, program_studi, semester, career_key, skills, minat, roadmap, user_id=None):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute(
+        """INSERT INTO mahasiswa (user_id, nama, program_studi, semester, career_key, skills, minat, roadmap_json)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (user_id, nama, program_studi, semester, career_key, json.dumps(skills), minat, json.dumps(roadmap)),
     )
     conn.commit()
     mahasiswa_id = cur.lastrowid

@@ -1,0 +1,57 @@
+<?php
+require_once __DIR__ . '/functions.php';
+$currentUser = currentUser();
+include __DIR__ . '/partials/header.php';
+?>
+
+<div class="hero">
+    <div class="hero-text">
+        <div class="hero-eyebrow">Goal-Based AI Planning</div>
+        <h1 class="hero-title">Smart Planner<br>Pengembangan Karier<br><span class="accent">Mahasiswa</span></h1>
+        <p class="hero-desc">Rancang roadmap karier mahasiswa dengan langkah-langkah yang terstruktur, mulai dari skill dasar, sertifikasi, portofolio, hingga persiapan magang dan karier.</p>
+        <div class="actions">
+            <?php if ($currentUser): ?>
+                <a class="btn btn-primary" href="dashboard.php">Lihat Roadmap Saya →</a>
+            <?php else: ?>
+                <a class="btn btn-primary" href="register.php">Mulai Rencanakan Karier →</a>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="hero-illustration">
+        <svg width="260" height="220" viewBox="0 0 260 220" fill="none">
+            <rect x="30" y="20" width="160" height="120" rx="10" fill="#eaf1ff"/>
+            <rect x="45" y="35" width="130" height="8" rx="4" fill="#c7dbff"/>
+            <rect x="45" y="50" width="90" height="8" rx="4" fill="#c7dbff"/>
+            <circle cx="150" cy="110" r="34" fill="#fff" stroke="#2f6fed" stroke-width="3"/>
+            <circle cx="150" cy="110" r="18" fill="#fde8e0" stroke="#f97316" stroke-width="2.5"/>
+            <circle cx="150" cy="110" r="5" fill="#f97316"/>
+            <path d="M60 150 L100 130 L140 145 L190 100" stroke="#16a34a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="190" cy="100" r="6" fill="#16a34a"/>
+        </svg>
+    </div>
+</div>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <div class="feature-icon" style="background:var(--accent-light)">📈</div>
+        <div class="feature-title">Roadmap per Semester</div>
+        <div class="feature-desc">Rencana langkah terstruktur setiap semester menuju profesi impian.</div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon" style="background:var(--green-bg)">💻</div>
+        <div class="feature-title">Rekomendasi Skill</div>
+        <div class="feature-desc">Rekomendasi skill yang perlu dipelajari sesuai tujuan karier.</div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon" style="background:var(--purple-bg)">🏆</div>
+        <div class="feature-title">Sertifikasi & Portofolio</div>
+        <div class="feature-desc">Saran sertifikasi dan proyek portofolio yang relevan dengan industri.</div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon" style="background:var(--orange-bg)">💼</div>
+        <div class="feature-title">Persiapan Magang</div>
+        <div class="feature-desc">Rekomendasi pengalaman magang untuk memperkuat kompetensimu.</div>
+    </div>
+</div>
+
+<?php include __DIR__ . '/partials/footer.php'; ?>
