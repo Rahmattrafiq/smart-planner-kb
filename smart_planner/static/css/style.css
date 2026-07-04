@@ -184,6 +184,12 @@ a { text-decoration: none; color: inherit; }
 .static-card h3 { margin-top: 0; }
 .static-card ul { padding-left: 20px; }
 
+.flash-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-width: 780px; }
+.flash { padding: 12px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+.flash.success { background: #e8f8ee; color: #166534; border: 1px solid #b7edc9; }
+.flash.error { background: #fdecea; color: #b42318; border: 1px solid #f6b7b0; }
+.profile-pill { background: rgba(255,255,255,0.08); border-radius: 999px; padding: 8px 10px; margin-bottom: 8px; font-size: 12px; color: #e8ecf7; text-align: center; }
+
 .empty-state { text-align: center; padding: 60px 20px; color: #6b7594; }
 .empty-state a { color: var(--accent); font-weight: 700; }
 

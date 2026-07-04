@@ -22,13 +22,14 @@
       <a href="{{ url_for('landing') }}" class="nav-item {{ 'active' if request.path == url_for('landing') else '' }}">
         <span class="nav-ic">&#8962;</span> Beranda
       </a>
-      <a href="{{ url_for('roadmap_view', mahasiswa_id=mhs.id) if mhs else url_for('input_form') }}"
-         class="nav-item {{ 'active' if '/roadmap' in request.path else '' }}">
-        <span class="nav-ic">&#128203;</span> Roadmap Saya
+      {% if session.get('user_id') %}
+      <a href="{{ url_for('input_form') }}" class="nav-item {{ 'active' if request.path == url_for('input_form') else '' }}">
+        <span class="nav-ic">&#10133;</span> Buat Roadmap
       </a>
       <a href="{{ url_for('profil') }}" class="nav-item {{ 'active' if request.path == url_for('profil') else '' }}">
         <span class="nav-ic">&#128100;</span> Profil Saya
       </a>
+      {% endif %}
       <a href="{{ url_for('panduan') }}" class="nav-item {{ 'active' if request.path == url_for('panduan') else '' }}">
         <span class="nav-ic">&#128218;</span> Panduan
       </a>
@@ -37,12 +38,28 @@
       </a>
     </nav>
     <div class="sidebar-footer">
-      <a href="{{ url_for('landing') }}" class="nav-item nav-item-muted">
+      {% if session.get('user_id') %}
+      <div class="profile-pill">Halo, {{ session.get('user_name', 'Mahasiswa') }}</div>
+      <a href="{{ url_for('logout') }}" class="nav-item nav-item-muted">
         <span class="nav-ic">&#8618;</span> Keluar
       </a>
+      {% else %}
+      <a href="{{ url_for('login') }}" class="nav-item nav-item-muted">
+        <span class="nav-ic">&#128274;</span> Masuk
+      </a>
+      {% endif %}
     </div>
   </aside>
   <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
     {% block content %}{% endblock %}
   </main>
 </div>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Daftar Akun{% endblock %}
+{% block content %}
+<div class="static-card" style="max-width: 520px; margin: 20px auto;">
+  <h3>Buat Akun Baru</h3>
+  <p class="page-sub" style="margin-bottom: 20px;">Daftar agar roadmap yang kamu buat tersimpan dan mudah diakses lagi.</p>
+  <form method="POST" action="{{ url_for('register') }}">
+    <div class="form-group" style="margin-bottom: 14px;">
+      <label>Nama Lengkap</label>
+      <input type="text" name="nama" value="{{ form_data.get('nama', '') }}" placeholder="Nama lengkap" required>
+    </div>
+    <div class="form-group" style="margin-bottom: 14px;">
+      <label>Email</label>
+      <input type="email" name="email" value="{{ form_data.get('email', '') }}" placeholder="contoh@email.com" required>
+    </div>
+    <div class="form-group" style="margin-bottom: 14px;">
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Minimal 6 karakter" required>
+    </div>
+    <div class="form-group" style="margin-bottom: 18px;">
+      <label>Konfirmasi Password</label>
+      <input type="password" name="confirm_password" placeholder="Ulangi password" required>
+    </div>
+    <div class="form-actions" style="justify-content: flex-start; gap: 10px;">
+      <button type="submit" class="btn-primary">Daftar</button>
+      <a href="{{ url_for('login') }}" class="btn-secondary">Sudah punya akun?</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
