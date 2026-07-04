@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Detail Semester {{ sem.semester_no }}{% endblock %}
+{% set phase_class = {1: 'belajar', 2: 'skill', 3: 'portofolio', 4: 'karier'} %}
+{% block content %}
+<a href="{{ url_for('roadmap_view', mahasiswa_id=mhs.id) }}" class="back-link">&larr; Kembali ke Roadmap</a>
+
+<div class="detail-header">
+  <div>
+    <div class="detail-title">Detail Semester {{ sem.semester_no }}</div>
+    <div class="detail-sub">{{ sem.phase_label }}</div>
+  </div>
+  <span class="focus-badge focus-{{ phase_class[sem.phase] }}">{{ sem.focus_tag }}</span>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" data-tab="ringkasan">Ringkasan</div>
+  <div class="tab" data-tab="skill">Skill yang Dipelajari</div>
+  <div class="tab" data-tab="sertifikasi">Sertifikasi</div>
+  <div class="tab" data-tab="portofolio">Portofolio</div>
+  <div class="tab" data-tab="magang">Magang</div>
+</div>
+
+<div class="detail-grid">
+  <div>
+    <!-- Ringkasan -->
+    <div class="tab-panel active" data-panel="ringkasan">
+      <div class="panel-card">
+        <p style="margin:0 0 16px;font-size:13.5px;color:#3a4468;line-height:1.7;">
+          Pada semester ini, fokusmu adalah <b>{{ sem.phase_label|lower }}</b> sesuai dengan target
+          kariermu sebagai <b>{{ mhs.roadmap.career_label }}</b>.
+        </p>
+        <h4>Aktivitas Utama</h4>
+        {% for a in sem.actions %}
+        <div class="task-item {{ 'done' if progress.get(a.id) else '' }}">
+          <input type="checkbox" data-action="{{ a.id }}" {{ 'checked' if progress.get(a.id) else '' }}>
+          <label>{{ a.name }}</label>
+        </div>
+        {% endfor %}
+        <div class="tip-box"><b>Tips:</b> Coba kerjakan mini project untuk memperkuat pemahamanmu dan konsisten belajar setiap minggu.</div>
+      </div>
+    </div>
+
+    {% for cat, label in [('skill','Skill yang Dipelajari'), ('certification','Sertifikasi'), ('portfolio','Portofolio'), ('magang','Magang')] %}
+    <div class="tab-panel" data-panel="{{ 'sertifikasi' if cat=='certification' else cat }}">
+      <div class="panel-card">
+        <h4>{{ label }}</h4>
+        {% if by_category[cat] %}
+          {% for a in by_category[cat] %}
+          <div class="task-item {{ 'done' if progress.get(a.id) else '' }}">
+            <input type="checkbox" data-action="{{ a.id }}" {{ 'checked' if progress.get(a.id) else '' }}>
+            <label>{{ a.name }} &mdash; <span style="color:#6b7594;font-weight:400;">{{ a.note }}</span></label>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p style="font-size:13px;color:#6b7594;">Tidak ada aktivitas kategori ini di semester ini.</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <div class="panel-card">
+      <h4>Rekomendasi Sumber Belajar</h4>
+      {% for name, url in all_resources[:4] %}
+      <div class="resource-item">
+        <span>{{ name }}</span>
+        <a href="{{ url }}" target="_blank">&rarr;</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="panel-card estimasi-box">
+      <h4 style="margin-bottom:2px;">Estimasi Waktu</h4>
+      <div class="estimasi-value">{{ (sem.actions|sum(attribute='weeks')) }} Minggu</div>
+      <div style="font-size:12.5px;color:#6b7594;">Semester {{ sem.semester_no }}</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelector('.tab-panel[data-panel="' + this.dataset.tab + '"]').classList.add('active');
+  });
+});
+
+document.querySelectorAll('input[data-action]').forEach(function(cb) {
+  cb.addEventListener('change', function() {
+    const actionId = this.dataset.action;
+    fetch("{{ url_for('toggle', mahasiswa_id=mhs.id, action_id='PLACEHOLDER') }}".replace('PLACEHOLDER', actionId), {
+      method: 'POST'
+    }).then(r => r.json()).then(data => {
+      document.querySelectorAll('input[data-action="' + actionId + '"]').forEach(function(el) {
+        el.checked = data.done;
+        el.closest('.task-item').classList.toggle('done', data.done);
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Roadmap Saya{% endblock %}
+{% set phase_class = {1: 'belajar', 2: 'skill', 3: 'portofolio', 4: 'karier'} %}
+{% block content %}
+<div class="roadmap-header">
+  <h1 class="page-title" style="flex-basis:100%;margin-bottom:0;">Roadmap Karier Saya</h1>
+</div>
+
+<div class="roadmap-header">
+  <div class="profile-card">
+    <div class="avatar">{{ mhs.nama[0]|upper }}</div>
+    <div>
+      <div class="profile-name">{{ mhs.nama }}</div>
+      <div class="profile-meta">{{ mhs.program_studi }} &middot; Semester {{ mhs.semester }}</div>
+      <div class="profile-meta">Target Karier: <b>{{ mhs.roadmap.career_label }}</b></div>
+    </div>
+  </div>
+
+  <div class="gap-card">
+    <div class="gap-title">Ringkasan Skill Gap</div>
+    <div class="gap-desc">Berikut adalah beberapa skill utama yang perlu kamu tingkatkan untuk mencapai target karier.</div>
+    <div class="gap-tags">
+      {% if mhs.roadmap.skill_gap %}
+        {% for gap in mhs.roadmap.skill_gap[:6] %}
+        <span class="gap-tag">{{ gap }}</span>
+        {% endfor %}
+      {% else %}
+        <span class="gap-tag" style="background:var(--green-bg);color:var(--green);">Skill sudah lengkap!</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <a href="{{ url_for('download_roadmap', mahasiswa_id=mhs.id) }}" class="btn-secondary" style="align-self:flex-start;">&#8681; Unduh Roadmap</a>
+</div>
+
+<div class="section-title">Roadmap Per Semester</div>
+
+{% if mhs.roadmap.semesters %}
+<div class="timeline">
+  {% for sem in mhs.roadmap.semesters %}
+  <div class="timeline-item">
+    <div class="timeline-dot dot-{{ phase_class[sem.phase] }}">{{ loop.index }}</div>
+    <a href="{{ url_for('semester_detail', mahasiswa_id=mhs.id, semester_no=sem.semester_no) }}" style="display:block;">
+      <div class="timeline-card {{ 'now' if sem.is_now else '' }}">
+        <div>
+          <div class="tl-sem">Semester {{ sem.semester_no }}{% if sem.is_now %}<span class="now-tag">(Sekarang)</span>{% endif %}{% if sem.is_last %}+{% endif %}</div>
+          <div class="tl-phase">{{ sem.phase_label }}</div>
+          <ul class="tl-list">
+            {% for a in sem.actions[:4] %}
+            <li>{{ a.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <span class="focus-badge focus-{{ phase_class[sem.phase] }}">{{ sem.focus_tag }}</span>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  Semua skill untuk target karier ini sudah kamu kuasai. Mantap!<br>
+  <a href="{{ url_for('input_form') }}">Buat roadmap baru</a>
+</div>
+{% endif %}
+{% endblock %}
